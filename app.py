@@ -5,7 +5,7 @@ from flask import request
 from flask import abort
 # from flask_restful import Api, Resource, reqparse
 # from make_requests import *
-
+from flask_cors import CORS
 from vaccine_blueprint import vaccine_blueprint
 import login
 import logout
@@ -23,6 +23,9 @@ db_main.print_metadata()
 
 
 app = Flask(__name__)
+CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
 app.secret_key = str.encode('_5#y2L"F4Q8z\n\xec]/' + str(random.random))
 app.register_blueprint(vaccine_blueprint)
 # parser = reqparse.RequestParser()
@@ -45,6 +48,16 @@ def flask_train_list():
 
     # return jsonify({'trains_list': trains_list}), 201
 
+@app.route('/getapplications', methods=['GET'])
+def getapplications():
+    data = {}
+    data["id"] = 1
+    data["companyName"]="Google";
+    data["role"]="Software Engineer";
+    data["location"]="NY";
+    data["a_status"]="DECLINED";
+
+    return jsonify(data), 200
 @app.route('/station_list', methods=['GET'])
 def flask_station_list():
     stations_list = get_station_names()

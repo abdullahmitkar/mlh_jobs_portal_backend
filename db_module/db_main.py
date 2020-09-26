@@ -15,7 +15,7 @@ import db_module.user as user
 import db_module.hospital
 import db_module.session_detail as session_detail
 
-engine = create_engine('sqlite:///vaccine.db')
+engine = create_engine('sqlite:///vaccine2.db')
 conn = engine.connect()
 
 def clear_tables():
@@ -60,12 +60,13 @@ def get_user_id(session):
 
 def insert_user(inp_obj):
     session = get_session()
-    row = session.query(user.User).filter(user.User.email == inp_obj["email"]).first()
+    print(user.User.name,"Username")
+    row = session.query(user.User).filter(user.User.name == inp_obj["name"]).first()
     if row != None:
         session.commit()
         return False, "Already Registered"
     user_detail = get_user_id(session)
-    insert_obj = user.User(inp_obj["first_name"], inp_obj["last_name"], inp_obj["email"], inp_obj["address"], inp_obj["mobile"], user_detail, inp_obj["password"])
+    insert_obj = user.User(inp_obj["name"], inp_obj["password"], inp_obj["portal"])
     insert_record(insert_obj, session)
 
     return True, user_detail
